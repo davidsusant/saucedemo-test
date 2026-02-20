@@ -1,0 +1,61 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.11.2'
+}
+
+group = 'com.saucedemo'
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Cucumber
+    testImplementation 'io.cucumber:cucumber-java:7.15.0'
+    testImplementation 'io.cucumber:cucumber-testng:7.15.0'
+
+    // Selenium
+    testImplementation 'org.seleniumhq.selenium:selenium-java:4.18.1'
+    testImplementation 'io.github.bonigarcia:webdrivermanager:5.7.0'
+
+    // TestNG
+    testImplementation 'org.testng:testng:7.9.0'
+
+    // Allure
+    testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.26.0'
+    testImplementation 'io.qameta.allure:allure-testng:2.26.0'
+    testImplementation 'org.aspectj:aspectjweaver:1.9.21'
+
+    // Logging
+    testImplementation 'org.slf4j:slf4j-api:2.0.12'
+    testImplementation 'ch.qos.logback:logback-classic:1.5.3'
+
+    // Assertions
+    testImplementation 'org.assertj:assertj-core:3.25.3'
+}
+
+sourceSets {
+    test {
+        java { srcDirs = ['src/test/java'] }
+        resources { srcDirs = ['src/test/resources'] }
+    }
+}
+
+allure {
+    report {
+        version.set('2.26.0')
+    }
+    adapter {
+        aspectjWeaver.set(true)
+        frameworks {
+            cucumber7 {
+                enabled.set(true)
+            }
+        }
+    }
+}
+
+test {
+    useTestNG()
+}
