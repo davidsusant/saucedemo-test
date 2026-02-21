@@ -6,14 +6,12 @@ import org.openqa.selenium.support.FindBy;
 public class InventoryPage extends BasePage {
 
     // Locators
-
     @FindBy(css = ".title")
     private WebElement pageTitle;
 
     // Assertions
-
     public boolean isInventoryPageDisplayed() {
-        return getCurrentUrl().contains("inventory.hrml") && isDisplayed(pageTitle);
+        return getCurrentUrl().contains("inventory.html") && isDisplayed(pageTitle);
     }
 
     public String getPageTitle() {
