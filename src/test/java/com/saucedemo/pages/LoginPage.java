@@ -8,7 +8,6 @@ import io.qameta.allure.Step;
 public class LoginPage extends BasePage {
 
     // Locators
-
     @FindBy(css = ".login_logo")
     private WebElement loginLogo;
 

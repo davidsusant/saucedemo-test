@@ -5,14 +5,20 @@ import org.assertj.core.api.Assertions;
 import com.saucedemo.pages.InventoryPage;
 import com.saucedemo.pages.LoginPage;
 
+import io.cucumber.java.Before;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 
 public class LoginSteps {
 
-    private LoginPage loginPage = new LoginPage();
+    private LoginPage loginPage;
     private InventoryPage inventoryPage;
+
+    @Before
+    public void initPages() {
+        loginPage = new LoginPage();
+    }
 
     @Given("I am on the login page")
     public void i_am_on_the_login_page() {

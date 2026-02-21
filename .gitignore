@@ -2,3 +2,5 @@
 .gradle/
 build/
 bin/
+allure-results/
+test-output/

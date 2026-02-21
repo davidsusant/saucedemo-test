@@ -40,11 +40,11 @@ public class ConfigManager {
     public String get(String key) {
         // System properties override file properties
         String sysProp = System.getProperty(key);
-        if (sysProp != null & !sysProp.isEmpty()) {
+        if (sysProp != null && !sysProp.isEmpty()) {
             return sysProp;
         }
 
-        String envProp = System.getenv(key.replace('.', '-').toUpperCase());
+        String envProp = System.getenv(key.replace('.', '_').toUpperCase());
         if (envProp != null && !envProp.isEmpty()) {
             return envProp;
         }
