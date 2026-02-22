@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'io.qameta.allure' version '2.11.2'
 }
 
 group = 'com.saucedemo'
@@ -41,6 +42,20 @@ sourceSets {
     }
 }
 
+allure {
+    report {
+        version.set('2.26.0')
+    }
+    adapter {
+        aspectjWeaver.set(true)
+        frameworks {
+            cucumber7 {
+                enabled.set(true)
+            }
+        }
+    }
+}
+
 test {
     useTestNG() {
         suites 'src/test/resources/testng.xml'
@@ -51,12 +66,13 @@ test {
 
     jvmArgs "-javaagent:${configurations.testRuntimeClasspath.find { it.name.contains('aspectjweaver') }}"
 
-    systemProperty 'allure.results.directory', 'build/allure-results'
-    systemProperty 'browser', System.getProperty('browser', 'chrome')
-    systemProperty 'headless', System.getProperty('headless', 'false')
-    systemProperty 'base.url', System.getProperty('base.url', 'https://www.saucedemo.com')
-    systemProperty 'implicit.wait', System.getProperty('implicit.wait', '10')
-    systemProperty 'explicit.wait', System.getProperty('explicit.wait', '15')
+    systemProperties = [
+        'browser': System.getProperty('browser', 'chrome'),
+        'headless': System.getProperty('headless', 'false'),
+        'base.url': System.getProperty('base.url', 'https://www.saucedemo.com'),
+        'implicit.wait': System.getProperty('implicit.wait', '10'),
+        'explicit.wait': System.getProperty('explicit.wait', '15')
+    ]
 
     testLogging {
         events 'passed', 'skipped', 'failed', 'started'
