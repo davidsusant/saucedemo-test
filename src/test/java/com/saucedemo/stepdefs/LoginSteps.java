@@ -39,6 +39,16 @@ public class LoginSteps {
         inventoryPage = loginPage.clickLoginButton();
     }
 
+    @When("I open the burger menu")
+    public void i_open_the_burger_menu() {
+        inventoryPage.openMenu();
+    }
+
+    @When("I click logout")
+    public void i_click_logout() {
+        loginPage = inventoryPage.logout();
+    }
+
     @Then("I should be redirected to the inventory page")
     public void i_should_be_redirected_to_the_inventory_page() {
         Assertions.assertThat(inventoryPage.isInventoryPageDisplayed())
@@ -51,5 +61,23 @@ public class LoginSteps {
         Assertions.assertThat(inventoryPage.getPageTitle())
                 .as("Page title should match")
                 .isEqualTo(expectedTitle);
+    }
+
+    @Then("I should see an error message containing {string}")
+    public void i_should_see_an_error_message_containing(String expectedError) {
+        Assertions.assertThat(loginPage.isErrorMessageDisplayed())
+            .as("Error message should be displayed")
+            .isTrue();
+
+        Assertions.assertThat(loginPage.getErrorMessage())
+            .as("Error message should contain expected text")
+            .contains(expectedError);
+    }
+
+    @Then("I should be on the login page")
+    public void i_should_be_on_the_login_page() {
+        Assertions.assertThat(loginPage.isLoginPageDisplayed())
+            .as("Should be back on login page after logout")
+            .isTrue();
     }
 }

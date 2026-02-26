@@ -71,7 +71,8 @@ test {
         'headless': System.getProperty('headless', 'false'),
         'base.url': System.getProperty('base.url', 'https://www.saucedemo.com'),
         'implicit.wait': System.getProperty('implicit.wait', '10'),
-        'explicit.wait': System.getProperty('explicit.wait', '15')
+        'explicit.wait': System.getProperty('explicit.wait', '15'),
+        'cucumber.filter.tags': System.getProperty('cucumber.filter.tags', '')
     ]
 
     testLogging {

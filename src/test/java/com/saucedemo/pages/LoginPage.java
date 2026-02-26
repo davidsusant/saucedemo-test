@@ -20,6 +20,9 @@ public class LoginPage extends BasePage {
     @FindBy(id = "password")
     private WebElement passwordField;
 
+    @FindBy(css = "[data-test='error']")
+    private WebElement errorMessage;
+
     // Actions
     @Step("Navigate to login page")
     public LoginPage open() {
@@ -49,5 +52,13 @@ public class LoginPage extends BasePage {
     // Assertions
     public boolean isLoginPageDisplayed() {
         return isDisplayed(loginLogo) && isDisplayed(loginButton);
+    }
+
+    public boolean isErrorMessageDisplayed() {
+        return isDisplayed(errorMessage);
+    }
+
+    public String getErrorMessage() {
+        return getText(errorMessage);
     }
 }

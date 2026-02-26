@@ -7,4 +7,7 @@ A Selenium + Cucumber + TestNG + Allure test automation framework for saucedemo.
 ```bash
 # Run all tests
 ./gradlew test
+
+# Run specific tags
+./gradlew test -Dcucumber.filter.tags="@smoke"
 ```

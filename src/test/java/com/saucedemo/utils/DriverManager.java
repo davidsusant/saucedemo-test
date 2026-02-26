@@ -1,6 +1,8 @@
 package com.saucedemo.utils;
 
 import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -54,6 +56,13 @@ public class DriverManager {
     private static ChromeDriver createChromeDriver() {
         WebDriverManager.chromedriver().setup();
         ChromeOptions options = new ChromeOptions();
+
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("profile.password_manager_leak_detection", false);
+        prefs.put("credentials_enable_service", false);
+        prefs.put("profile.password_manager_enabled", false);
+
+        options.setExperimentalOption("prefs", prefs);
 
         if (config.isHeadless()) {
             options.addArguments("--headless=new");

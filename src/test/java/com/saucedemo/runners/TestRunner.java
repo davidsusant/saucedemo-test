@@ -17,8 +17,7 @@ import io.cucumber.testng.CucumberOptions;
         "json:build/reports/cucumber-report.json",
         "io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm"
     }, 
-    monochrome = true, 
-    tags = "not @ignore"
+    monochrome = true
 )
 public class TestRunner extends AbstractTestNGCucumberTests {
 
