@@ -26,7 +26,6 @@ public class InventoryPage extends BasePage {
 
     @Step("Logout")
     public LoginPage logout() {
-        openMenu();
         click(logoutLink);
         return new LoginPage();
     }

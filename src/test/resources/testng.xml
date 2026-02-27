@@ -1,11 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
-<suite name="SauceDemo Test Suite" verbose="2" parallel="none">
+<suite name="SauceDemo Test Suite" verbose="1">
 
-    ><listeners>
-        <listener class-name="io.qameta.allure.testng.AllureTestNg"></listener>
-    </listeners>
-
-    <test name="Cucumber Tests">
+    <test name="SauceDemo Tests">
         <classes>
             <class name="com.saucedemo.runners.TestRunner"/>
         </classes>

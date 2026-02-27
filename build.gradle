@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'io.qameta.allure' version '2.11.2'
+    id 'io.qameta.allure' version '2.12.0'
 }
 
 group = 'com.saucedemo'
@@ -10,10 +10,23 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    aspectjweaver
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'org.aspectj:aspectjweaver:1.9.21'
+        force 'org.aspectj:aspectjrt:1.9.21'
+        force 'org.aspectj:aspectjtools:1.9.21'
+    }
+}
+
 dependencies {
     // Cucumber
     testImplementation 'io.cucumber:cucumber-java:7.15.0'
     testImplementation 'io.cucumber:cucumber-testng:7.15.0'
+    testImplementation 'io.cucumber:cucumber-picocontainer:7.15.0'
 
     // Selenium
     testImplementation 'org.seleniumhq.selenium:selenium-java:4.18.1'
@@ -25,7 +38,6 @@ dependencies {
     // Allure
     testImplementation 'io.qameta.allure:allure-cucumber7-jvm:2.26.0'
     testImplementation 'io.qameta.allure:allure-testng:2.26.0'
-    testImplementation 'org.aspectj:aspectjweaver:1.9.21'
 
     // Logging
     testImplementation 'org.slf4j:slf4j-api:2.0.12'
@@ -33,6 +45,10 @@ dependencies {
 
     // Assertions
     testImplementation 'org.assertj:assertj-core:3.25.3'
+
+    // AspectJ
+    testImplementation 'org.aspectj:aspectjweaver:1.9.21'
+    aspectjweaver 'org.aspectj:aspectjweaver:1.9.21'
 }
 
 sourceSets {
@@ -46,17 +62,17 @@ allure {
     report {
         version.set('2.26.0')
     }
-    adapter {
-        aspectjWeaver.set(true)
-        frameworks {
-            cucumber7 {
-                enabled.set(true)
-            }
-        }
-    }
+}
+
+task cleanAllureResults(type: Delete) {
+    delete "${projectDir}/allure-results"
 }
 
 test {
+    dependsOn cleanAllureResults
+
+    jvmArgs "-javaagent:${configurations.aspectjweaver.asPath}"
+
     useTestNG() {
         suites 'src/test/resources/testng.xml'
         useDefaultListeners = true
@@ -64,21 +80,17 @@ test {
 
     scanForTestClasses = false
 
-    jvmArgs "-javaagent:${configurations.testRuntimeClasspath.find { it.name.contains('aspectjweaver') }}"
-
     systemProperties = [
         'browser': System.getProperty('browser', 'chrome'),
         'headless': System.getProperty('headless', 'false'),
         'base.url': System.getProperty('base.url', 'https://www.saucedemo.com'),
         'implicit.wait': System.getProperty('implicit.wait', '10'),
         'explicit.wait': System.getProperty('explicit.wait', '15'),
-        'cucumber.filter.tags': System.getProperty('cucumber.filter.tags', '')
+        'cucumber.filter.tags': System.getProperty('cucumber.filter.tags', 'not @ignore')
     ]
 
     testLogging {
-        events 'passed', 'skipped', 'failed', 'started'
+        events 'passed', 'skipped', 'failed'
         showStandardStreams = true
-        showExceptions = true
-        showStackTraces = true
     }
 }

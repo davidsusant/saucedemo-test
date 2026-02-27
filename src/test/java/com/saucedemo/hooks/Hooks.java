@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import com.saucedemo.config.ConfigManager;
 import com.saucedemo.utils.DriverManager;
 import com.saucedemo.utils.ScreenshotUtils;
+import com.saucedemo.utils.TestContext;
 
 import io.cucumber.java.After;
 import io.cucumber.java.AfterStep;
@@ -18,17 +19,24 @@ public class Hooks {
     private static final Logger logger = LoggerFactory.getLogger(Hooks.class);
     private static final ConfigManager config = ConfigManager.getInstance();
 
-    @Before(order = 1)
-    public void setup(Scenario scenario) {
-        logger.info("Starting scenario: {}", scenario.getName());
-        Allure.description("Scenario: " + scenario.getName());
-        DriverManager.initDriver();
+    private final TestContext context;
+
+    public Hooks(TestContext context) {
+        this.context = context;
     }
 
-    @After(order = 1)
+    @Before(order = 0)
+    public void setup(Scenario scenario) {
+        DriverManager.initDriver();
+        
+        logger.info("Starting scenario: {}", scenario.getName());
+    }
+
+    @After(order = 0)
     public void tearDown(Scenario scenario) {
         if (scenario.isFailed() && config.isScreenshotOnFailure()) {
             logger.warn("Scenario FAILED: {} --- capturing screenshot", scenario.getName());
+            
             ScreenshotUtils.attachToAllure("Failure - " + scenario.getName());
             ScreenshotUtils.saveToFile(scenario.getName());
         }
